@@ -1,13 +1,16 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <!--<h1>{{ msg }}</h1>-->
+    <img src="../assets/house.jpeg"/>
 
+    <div class="writer mail_box"></div>
+    <div class="reader mail_box"></div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'Content',
   props: {
     msg: String
   }
@@ -30,4 +33,27 @@ li {
 a {
   color: #42b983;
 }
+
+.mail_box {
+  width: 50px;
+  height: 100px;
+  position: absolute;
+
+}
+
+.writer{
+  left: 350px;
+  top: 200px;
+}
+
+.reader{
+  left: 950px;
+  top: 200px;
+
+}
+
+.mail_box:hover{
+  cursor: pointer;
+}
+
 </style>
