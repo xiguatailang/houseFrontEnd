@@ -17,7 +17,11 @@ export default {
       // ManHeader
   }
 }
+
+
 </script>
+
+
 
 <style>
 #app {
