@@ -1,21 +1,14 @@
 <template>
   <div id="app">
-    <ManHeader />
-    <Content msg="Welcome to Your house App"/>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Content from './components/Content.vue';
-import ManHeader from './components/ManHeader';
 
 export default {
   name: 'app',
-  components: {
-      ManHeader,
-      Content,
-      // ManHeader
-  }
+
 }
 
 

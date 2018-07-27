@@ -39,15 +39,7 @@ export default {
         popWriteBox:function () {
             $('#myModal').modal('show')
 
-            // fetch('http://housebackend.com:8099/api/login',{
-            //     name:'napple',
-            //     password:123456,
-            // }).then(data=>{
-            //     alert(data)
-            // })
-
-
-            this.$axios.post('http://housebackend.com:8099/api/login',{name:"napple",password:123456}).then(data=>{
+            this.$axios.post(this.$API_CONFIG.API_LOGIN,{name:"napple",password:123456}).then(data=>{
                     this.$vueCookies.set('houseToken',data.headers.token,3600);
                 })
         }

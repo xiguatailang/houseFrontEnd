@@ -8,12 +8,13 @@
             <!----start-top-nav---->
             <nav class="top-nav">
                 <ul class="top-nav">
-                    <li class="active"><a href="#home" class="scroll">Home <span> </span></a></li>
-                    <li class="page-scroll"><a href="#ser" class="scroll">Services <span> </span></a></li>
-                    <li class="page-scroll"><a href="#about" class="scroll">About us <span> </span></a></li>
-                    <li class="page-scroll"><a href="#port" class="scroll">Portfolio <span> </span></a></li>
-                    <li class="page-scroll"><a href="#team" class="scroll">Team<span> </span></a></li>
-                    <li class="contatct-active"><a href="#contact" class="scroll">Contact us </a></li>
+                    <li class="active"><router-link to="/" class="scroll">Home <span> </span></router-link></li>
+                    <li class="page-scroll"><router-link to="/message" class="scroll">Message <span> </span></router-link></li>
+                    <li class="page-scroll"><router-link to="/share" class="scroll">Share <span> </span></router-link></li>
+                    <li class="page-scroll"><router-link to="/profile" class="scroll">Profile <span> </span></router-link></li>
+                    <li class="page-scroll"><router-link to="/donate" class="scroll">Donate<span> </span></router-link></li>
+                    <li class="contatct-active"><router-link to="/feedBack" class="scroll">feedBack </router-link></li>
+                    <li class="contatct-active"><router-link to="/about_us" class="scroll">About us </router-link></li>
                 </ul>
                 <a href="#" id="pull"><img src="images/nav-icon.png" title="menu"></a>
             </nav>
