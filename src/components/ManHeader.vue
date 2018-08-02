@@ -15,6 +15,7 @@
                     <li class="page-scroll"><router-link to="/donate" class="scroll">Donate<span> </span></router-link></li>
                     <li class="contatct-active"><router-link to="/feedBack" class="scroll">feedBack </router-link></li>
                     <li class="contatct-active"><router-link to="/about_us" class="scroll">About us </router-link></li>
+                    <li class="contatct-active"><router-link to="/login" class="login">Login </router-link></li>
                 </ul>
                 <a href="#" id="pull"><img src="images/nav-icon.png" title="menu"></a>
             </nav>
