@@ -1,29 +1,7 @@
 <template>
     <div id="home" class="header">
 
-        <h2>the house</h2>
-
-        <!--<div class="container">-->
-            <!--<div class="logo">-->
-                <!--<div>TheHouse</div>-->
-            <!--</div>-->
-            <!---->
-            <!--<nav class="top-nav">-->
-                <!--<ul class="top-nav">-->
-                    <!--<li class="active"><router-link to="/" class="scroll">Home <span> </span></router-link></li>-->
-                    <!--<li class="page-scroll"><router-link to="/message" class="scroll">Message <span> </span></router-link></li>-->
-                    <!--<li class="page-scroll"><router-link to="/share" class="scroll">Share <span> </span></router-link></li>-->
-                    <!--<li class="page-scroll"><router-link to="/profile" class="scroll">Profile <span> </span></router-link></li>-->
-                    <!--<li class="page-scroll"><router-link to="/donate" class="scroll">Donate<span> </span></router-link></li>-->
-                    <!--<li class="contatct-active"><router-link to="/feedBack" class="scroll">feedBack </router-link></li>-->
-                    <!--<li class="contatct-active"><router-link to="/about_us" class="scroll">About us </router-link></li>-->
-                    <!--<li class="contatct-active"><router-link to="/login" class="login">Login </router-link></li>-->
-                <!--</ul>-->
-                <!--<a href="#" id="pull"><img src="images/nav-icon.png" title="menu"></a>-->
-            <!--</nav>-->
-            <!--<div class="clearfix"> </div>-->
-        <!--</div>-->
-
+        <h2 v-if="c_route">the house</h2>
 
         <a id="header-menu-trigger" href="#0" v-on:click="showMenu">
             <span class="header-menu-text">Menu</span>
@@ -35,12 +13,13 @@
 
                 <a href="#0" class="close-button" title="close" v-on:click="hideMenu"><span>Close</span></a>
 
-                <h3>TheHouse.</h3>
+                <!--<h3>TheHouse.</h3>-->
 
                 <ul class="nav-list">
                     <li class="active"><router-link to="/" class="scroll">Home <span> </span></router-link></li>
                     <li class="page-scroll"><router-link to="/message" class="scroll">Message <span> </span></router-link></li>
                     <li class="contatct-active"><router-link to="/about_us" class="scroll">About us </router-link></li>
+                    <li class="contatct-active"><router-link to="/dialogue" class="scroll">Dialogue </router-link></li>
                 </ul>
 
                 <ul class="header-social-list">
@@ -71,6 +50,11 @@
 <script>
     export default {
         name: "ManHeader",
+        data(){
+            return {
+                c_route: this.$route.path=='/' ? false : true,
+            }
+        },
         methods:{
             hideMenu:function () {
                 this.$('.menu_out_wrap').removeClass('menu-is-open');

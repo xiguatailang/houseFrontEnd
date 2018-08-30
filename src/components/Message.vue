@@ -26,36 +26,8 @@
                 <input type="hidden" value="0" name="start">
                 <div class="doumail-list">
                     <ul>
-                        <li class="">
 
-
-                            <div class="pic">
-                                <a href="https://www.douban.com/doumail/2086274753/" class="icon-sys"></a>
-                            </div>
-
-                            <div class="title">
-                                <div class="sender">
-                                    <span class="time">2018-08-03</span>
-                                    <span class="from">系统豆邮</span>
-                                </div>
-                                <p>
-                                    <a href="https://www.douban.com/doumail/system/" class="url">
-                                        同城活动删除通知
-                                    </a>
-                                </p>
-                            </div>
-
-                            <div class="select">
-                                <input type="checkbox" name="mc_system" value="system">
-                            </div>
-
-                            <div class="operations">
-                                <a rel="direct" title="真的要举报为垃圾豆邮？" data-id="system" data-slink="https://www.douban.com/doumail/2086274753/" data-sname="系统豆邮" data-user="wudongdefeng" class="post_link report" href="javascript:;">举报</a>
-                                <a title="将删除整个对话, 是否确定?" class="post_link" href="https://www.douban.com/doumail/?mc_delete=删除豆邮&amp;mc_system=system&amp;type=submit">删除</a>
-                            </div>
-
-                        </li>
-                        <li class="">
+                        <li class="" style="width: 100%;">
 
 
                             <div class="pic">

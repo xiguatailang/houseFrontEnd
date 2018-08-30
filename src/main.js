@@ -25,6 +25,7 @@ import Donate from './components/Donate';
 import Feedback from './components/Feedback';
 import AboutUs from './components/AboutUs';
 import Login from './components/Login';
+import Dialogue from './components/Dialogue';
 
 const router = new VueRouter({
     routes:[
@@ -36,6 +37,7 @@ const router = new VueRouter({
         {path:'/feedback',component:Feedback},
         {path:'/about_us',component:AboutUs},
         {path:'/login',component:Login},
+        {path:'/dialogue',component:Dialogue},
     ],
     mode:'history',
 })
