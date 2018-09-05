@@ -20,6 +20,7 @@
                     <li class="page-scroll"><router-link to="/message" class="scroll">Message <span> </span></router-link></li>
                     <li class="contatct-active"><router-link to="/about_us" class="scroll">About us </router-link></li>
                     <li class="contatct-active"><router-link to="/dialogue" class="scroll">Dialogue </router-link></li>
+                    <li class="contatct-active"><router-link to="/login" class="scroll">Login </router-link></li>
                 </ul>
 
                 <ul class="header-social-list">

@@ -109,7 +109,7 @@ export default {
                     alert(data.data.msg);
                 }
             })
-        },
+        }
     }
 }
 
