@@ -33,6 +33,8 @@
 
 <script>
     import ManHeader from './ManHeader';
+    import Alert from './Alert';
+
     export default {
         name: "Login",
         components: {
@@ -51,13 +53,15 @@
                         if(data.data.code==200) {
                             this.$vueCookies.set('houseToken', data.headers.token, 3600);
                             this.$axios.defaults.headers.common['token'] = data.headers.token;
-                            alert(data.data.msg)
+
+                            this.$('#homepage').trigger('click')
+
                         }else {
-                            alert(data.data.msg)
+                            Alert.methods.warning('warning' ,data.data.msg)
                         }
                     })
                 }else {
-                    alert('check your name and password');
+                    Alert.methods.warning('danger' ,'check your name and password');
                 }
             }
         }

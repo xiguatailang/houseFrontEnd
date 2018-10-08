@@ -1,14 +1,15 @@
 <template>
     <div id="home" class="header">
 
-        <h2 v-if="c_route">the house</h2>
+        <h4 v-if="c_route">有求必应</h4>
 
         <a id="header-menu-trigger" href="#0" v-on:click="showMenu">
-            <span class="header-menu-text">Menu</span>
+            <!--<span class="header-menu-text">Menu</span>-->
+            <span class="header-menu-text"><font-awesome-icon icon="bell" v-if="message_count"/></span>
             <span class="header-menu-icon"></span>
         </a>
 
-        <div class="menu_out_wrap menu-is-open">
+        <div class="menu_out_wrap">
             <nav id="menu-nav-wrap">
 
                 <a href="#0" class="close-button" title="close" v-on:click="hideMenu"><span>Close</span></a>
@@ -16,10 +17,12 @@
                 <!--<h3>TheHouse.</h3>-->
 
                 <ul class="nav-list">
-                    <li class="active"><router-link to="/" class="scroll">Home <span> </span></router-link></li>
-                    <li class="page-scroll"><router-link to="/message" class="scroll">Message <span> </span></router-link></li>
+                    <li class="active"><router-link to="/" class="scroll"> <span id="homepage">Home </span></router-link></li>
+                    <li class="page-scroll" title="messages"><router-link to="/message" class="scroll"><span id="message">Messages</span> <span v-if="message_count">{{message_count}}</span> </router-link></li>
                     <li class="contatct-active"><router-link to="/about_us" class="scroll">About us </router-link></li>
                     <li class="contatct-active"><router-link to="/dialogue" class="scroll">Dialogue </router-link></li>
+                    <li class="contatct-active"><router-link to="/write_package" class="scroll">package </router-link></li>
+                    <li class="contatct-active"><router-link to="/reply_proper_package" class="scroll">Reply </router-link></li>
                     <li class="contatct-active"><router-link to="/login" class="scroll">Login </router-link></li>
                 </ul>
 
@@ -49,20 +52,71 @@
 </template>
 
 <script>
+    import Alert from './Alert';
+
     export default {
         name: "ManHeader",
+
         data(){
             return {
                 c_route: this.$route.path=='/' ? false : true,
+                message_count: 0,
             }
         },
+        // props:{
+        //     message_count:{
+        //         type: Number,
+        //         required: false,
+        //     }
+        // },
         methods:{
             hideMenu:function () {
                 this.$('.menu_out_wrap').removeClass('menu-is-open');
             },
             showMenu:function () {
                 this.$('.menu_out_wrap').addClass('menu-is-open');
+            },
+            alarmclock:function () {
+                this.$axios.post(this.$API_CONFIG.API_WRITE_USER_GETNEWMESSAGES,{}).then(data=>{
+                    this.message_count = data.data.data;
+                })
             }
+        },
+        created:function () {
+            var ws = this.$ws;
+            ws.onopen = function() {
+                ws.send('connect');
+            };
+
+            setTimeout(this.alarmclock,5000)
+
+            var query = this.$;
+            ws.onmessage = function(e) {
+                console.log("收到服务端的消息：" + e.data);
+                var result = JSON.parse(e.data);
+                if(result.code==200){
+                    if(result.msg=='initMessageReminding'){
+                        setTimeout(this.alarmclock,20000)
+                    }else{
+
+                        //TODO 因为后端是异步入库，这里直接跳转会有问题
+                        // query('#message').trigger('click')
+                        Alert.methods.warning('success' ,'回复成功，稍后可在消息列表查看！');
+                        query('#isay-submit').attr('disabled' ,'disabled')
+                    }
+
+                }else {
+                    Alert.methods.warning('warning' ,result.msg);
+                }
+
+
+            };
+        },
+
+        mounted:function () {
+            this.$axios.post(this.$API_CONFIG.API_WRITE_USER_GETNEWMESSAGES,{}).then(data=>{
+                this.message_count = data.data.data;
+            })
         }
     }
 
@@ -70,10 +124,11 @@
 
 <style scoped>
 
-    .header h2{
+    .header h4{
         font-weight: 900;
-        font-family: 'Lato', sans-serif;
-        font-size: 30px;
+        /*font-family: 'Lato', sans-serif;*/
+        font-family: 'STLiti';
+        font-size: 25px;
         margin: 20px 0 10px 20px;
         line-height: 1.1;
         text-align: left;
@@ -86,7 +141,7 @@
         display: block;
         position: fixed;
         right: 26px;
-        top: 120px;
+        top: 0;
         height: 42px;
         width: 42px;
         line-height: 42px;
@@ -102,12 +157,9 @@
         transition: all 0.3s ease-in-out;
     }
 
-    #header-menu-trigger.opaque {
-        background-color: #000000;
-    }
 
-    #header-menu-trigger.opaque .header-menu-text {
-        background-color: #000000;
+    #header-menu-trigger .header-menu-text {
+        background-color: red;
     }
 
     #header-menu-trigger:hover,
@@ -119,7 +171,7 @@
         display: block;
         position: absolute;
         top: 0;
-        left: -75px;
+        left: 15px;
         width: 75px;
         text-align: center;
         background-color: transparent;

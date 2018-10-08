@@ -11,12 +11,12 @@
 
             <div class="doumail-bd">
 
-                <div class="split-line"><i>2018-06-20</i></div>
+                <!--<div class="split-line"><i>2018-06-20</i></div>-->
 
-                <div class="chat" data="2028531996">
+                <div class="chat" v-for="cur_message in package_messages">
 
-                    <div class="info">
-                        <span class="time">23:37</span>
+                    <div class="info" :value="cur_message.writer">
+                        <span class="time">{{cur_message.write_at}}</span>
                     </div>
 
 
@@ -28,11 +28,15 @@
                     </div>
                     <div class="content">
                         <div class="sender">
-                            <a href="https://www.douban.com/people/80104970/">wudongdefeng</a>
+                            <a href="https://www.douban.com/people/80104970/">{{cur_message.writer}}</a>
                         </div>
 
 
-                        <p>照片好像发不了。。。。</p>
+                        <p>{{cur_message.content}}</p>
+
+                        <button v-on:click="showTextArea(cur_message.writer)" type="button" id="myButton" class="btn btn-primary" style="background-color: #fcf8e3;color: black;border: #fcf8e3;float: right;">
+                            回复
+                        </button>
 
                     </div>
 
@@ -42,84 +46,83 @@
                 </div>
 
 
-                <div class="split-line"><i>2018-06-21</i></div>
-
-                <div class="chat" data="2028880895">
-
-                    <div class="info">
-                        <span class="time">10:42</span>
-                    </div>
-
-
-                    <div class="pic">
-
-                        <a href="https://www.douban.com/people/157097273/">
-                            <img src="https://img3.doubanio.com/icon/u157097273-2.jpg" alt="不当仙女很久了">
-                        </a>
-                    </div>
-                    <div class="content">
-                        <div class="sender">
-                            <a href="https://www.douban.com/people/157097273/">不当仙女很久了</a>
-                        </div>
-
-
-                        <p>现在呢</p>
-
-                    </div>
-
-                    <div class="operations">
-                        <a href="#" data-mid="2028880895" class="lnk-delete">删除</a>
-                    </div>
-                </div>
-
-
-                <div class="chat" id="status-unread-anchor" data="2029034318">
-
-                    <div class="info">
-                        <span class="time">13:05</span>
-                    </div>
-
-
-                    <div class="pic">
-
-                        <a href="https://www.douban.com/people/80104970/">
-                            <img src="https://img3.doubanio.com/icon/u80104970-2.jpg" alt="wudongdefeng">
-                        </a>
-                    </div>
-                    <div class="content">
-                        <div class="sender">
-                            <a href="https://www.douban.com/people/80104970/">wudongdefeng</a>
-                        </div>
-
-
-                        <p>几个月前拍的照片吧，下面是我家的小朋友胖子哈哈</p>
-
-                    </div>
-
-                    <div class="operations">
-                        <a href="#" data-mid="2029034318" class="lnk-delete">删除</a>
-                    </div>
-                </div>
-
-
-                <div class="doumail-reply">
-                    <form method="post" enctype="multipart/form-data"> <input type="hidden" name="ck" value="-PRD"> <input type="hidden" name="to" value="157097273">  <div class="item item-text"> <textarea name="m_text" rows="10" cols="80" autocomplete="off" value="{text}"></textarea> </div>  <div class="toolbar"> <div class="item-submit"> <span class="bn-flat"> <input type="submit" name="m_reply" value="回应"> </span> </div>  </div> </form>
+                <div class="doumail-reply" style="display: none">
+                    <form method="post" enctype="multipart/form-data"> <input type="hidden" name="ck" value="-PRD"> <input type="hidden" name="to" value="157097273">  <div class="item item-text"> <textarea name="m_text" rows="10" cols="80" id="reply_wrap"></textarea> </div>  <div class="toolbar"> <div class="item-submit"> <span class="bn-flat"> <input type="button" name="m_reply" value="回应" v-on:click="replyMessage()"> </span> </div>  </div> </form>
                 </div>
             </div>
 
-
         </div>
+
 
     </div>
 </template>
 
 <script>
     import ManHeader from './ManHeader';
+    import Alert from './Alert';
     export default {
         name: "Dialogue",
         components: {
             ManHeader,
+        },
+        data(){
+            return {
+                package_messages:'',
+            }
+        },
+        created:function () {
+            var package_id = this.getUrlParam().package;
+            this.$axios.post(this.$API_CONFIG.API_GET_PACKAGE_MESSAGES,{package_id:package_id}).then(data=>{
+                if(data.data.code==200) {
+                    this.package_messages = data.data.data;
+
+                }else {
+                    Alert.methods.warning('warning' ,data.data.msg)
+                }
+            })
+
+        },
+        methods:{
+            getUrlParam:function () {
+                var url = window.location.search; //获取url中"?"符后的字串
+                var theRequest = new Object();
+                var strs = [];
+                if (url.indexOf("?") != -1) {
+                    var str = url.substr(1);
+                    strs = str.split("&");
+                    for(var i = 0; i < strs.length; i ++) {
+
+                        theRequest[strs[i].split("=")[0]]=decodeURI(strs[i].split("=")[1]);
+
+                    }
+                }
+                return theRequest;
+            },
+            replyMessage:function () {
+
+                if(!this.$('#reply_wrap').val()){
+                    Alert.methods.warning('danger' ,'no empty')
+                    return;
+                }
+                var params = {
+                    'content':this.$('#reply_wrap').val(),
+                    'token':this.$axios.defaults.headers.common['token'],
+                    'type':'message',
+                    'package_id': this.getUrlParam().package,
+                    'reader':this.$('.info').eq(0).attr('value'),
+                };
+
+                var ws = this.$ws;
+                // console.log(ws)
+                ws.send(JSON.stringify(params));
+            },
+            showTextArea:function (target) {
+                this.$('.doumail-reply').css('display' ,'block')
+                this.$('#reply_wrap').text('写给@'+target)
+            }
+
         }
+
 
     }
 </script>
@@ -219,9 +222,9 @@
         border-width: 0;
         vertical-align: middle;
     }
-    .item-text{
-        line-height: 0;
-    }
+    /*.item-text{*/
+        /*line-height: 0;*/
+    /*}*/
     textarea{
         width: 600px;
         margin-left: 52px;

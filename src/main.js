@@ -8,6 +8,15 @@ import axios from 'axios2';
 import VueCookies from 'vue-cookie';
 import API_CONFIG from './config.js';
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faComments } from '@fortawesome/free-solid-svg-icons'
+import { faBell } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+//FontAwesomeIcon
+library.add(faComments)
+library.add(faBell)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 //use jquery
 Vue.prototype.$ = VueJquery;
@@ -26,6 +35,8 @@ import Feedback from './components/Feedback';
 import AboutUs from './components/AboutUs';
 import Login from './components/Login';
 import Dialogue from './components/Dialogue';
+import WritePackae from './components/WritePackage';
+import ReplyProperPackage from './components/ReplyProperPackage';
 
 const router = new VueRouter({
     routes:[
@@ -38,6 +49,8 @@ const router = new VueRouter({
         {path:'/about_us',component:AboutUs},
         {path:'/login',component:Login},
         {path:'/dialogue',component:Dialogue},
+        {path:'/write_package',component:WritePackae},
+        {path:'/reply_proper_package',component:ReplyProperPackage},
     ],
     mode:'history',
 })
@@ -65,6 +78,20 @@ if(VueCookies.get('houseToken')){
     axios.defaults.headers.common['token'] = VueCookies.get('houseToken');
 }
 
+
+//websocket
+var ws = null;
+ws = new WebSocket("ws://127.0.0.1:2000");
+Vue.prototype.$ws = ws;
+
+
+// use KindEditor
+import VueKindEditor from 'vue-kindeditor'
+import 'kindeditor/kindeditor-all-min.js'
+import 'kindeditor/themes/default/default.css'
+
+
+Vue.use(VueKindEditor)
 
 new Vue({
     router,

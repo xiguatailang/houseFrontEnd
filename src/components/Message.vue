@@ -42,16 +42,17 @@
                                     <span class="time">{{cur_package.created_at}}</span>
                                     <span class="from">{{cur_package.writer}}</span>
                                 </div>
-                                <p>
-                                    <a href="https://www.douban.com/doumail/157097273/" class="url">
-                                        {{cur_package.content}}
-                                    </a>
-                                </p>
+
+                                <div v-html="spliceContent(cur_package.content)" id="content_wrap">
+
+                                </div>
+                                <router-link :to="{ path: 'dialogue', query: { package: cur_package.package_id }}" style="float: right" class="scroll">More </router-link>
+
                             </div>
 
-                            <div class="select">
-                                <input type="checkbox" name="mc_157097273" :value="cur_package.package_id">
-                            </div>
+                            <!--<div class="select">-->
+                                <!--<input type="checkbox" name="mc_157097273" :value="cur_package.package_id">-->
+                            <!--</div>-->
 
                             <div class="operations">
                                 <a rel="direct" title="真的要举报为垃圾豆邮？" data-id="157097273" data-slink="https://www.douban.com/people/157097273/" data-sname="不当仙女很久了" data-user="wudongdefeng" class="post_link report" href="javascript:;">举报</a>
@@ -59,70 +60,7 @@
                             </div>
 
                         </li>
-                        <!--<li class="">-->
 
-
-                            <!--<div class="pic">-->
-                                <!--<a href="https://www.douban.com/people/95805238/">-->
-                                    <!--<img src="https://img3.doubanio.com/icon/u95805238-16.jpg">-->
-                                    <!--<span class="user-verify-icon-1-small"></span>-->
-                                <!--</a>-->
-                            <!--</div>-->
-
-                            <!--<div class="title">-->
-                                <!--<div class="sender">-->
-                                    <!--<span class="time">2016-06-28</span>-->
-                                    <!--<span class="from">豆瓣</span>-->
-                                <!--</div>-->
-                                <!--<p>-->
-                                    <!--<a href="https://www.douban.com/doumail/95805238/" class="url">-->
-                                        <!--亲爱的 wudongdefeng 你好，-->
-                                        <!--...-->
-                                    <!--</a>-->
-                                <!--</p>-->
-                            <!--</div>-->
-
-                            <!--<div class="select">-->
-                                <!--<input type="checkbox" name="mc_95805238" value="95805238">-->
-                            <!--</div>-->
-
-                            <!--<div class="operations">-->
-                                <!--<a rel="direct" title="真的要举报为垃圾豆邮？" data-id="95805238" data-slink="https://www.douban.com/people/95805238/" data-sname="豆瓣" data-user="wudongdefeng" class="post_link report" href="javascript:;">举报</a>-->
-                                <!--<a title="将删除整个对话, 是否确定?" class="post_link" href="https://www.douban.com/doumail/?mc_delete=删除豆邮&amp;mc_95805238=95805238&amp;type=submit">删除</a>-->
-                            <!--</div>-->
-
-                        <!--</li>-->
-                        <!--<li class="">-->
-
-
-                            <!--<div class="pic">-->
-                                <!--<a href="https://www.douban.com/people/46056530/">-->
-                                    <!--<img src="https://img3.doubanio.com/icon/u46056530-5.jpg">-->
-                                <!--</a>-->
-                            <!--</div>-->
-
-                            <!--<div class="title">-->
-                                <!--<div class="sender">-->
-                                    <!--<span class="time">2015-01-20</span>-->
-                                    <!--<span class="from">千寻</span>-->
-                                <!--</div>-->
-                                <!--<p>-->
-                                    <!--<a href="https://www.douban.com/doumail/46056530/" class="url">-->
-                                        <!--加微信说吧545230809-->
-                                    <!--</a>-->
-                                <!--</p>-->
-                            <!--</div>-->
-
-                            <!--<div class="select">-->
-                                <!--<input type="checkbox" name="mc_46056530" value="46056530">-->
-                            <!--</div>-->
-
-                            <!--<div class="operations">-->
-                                <!--<a rel="direct" title="真的要举报为垃圾豆邮？" data-id="46056530" data-slink="https://www.douban.com/people/46056530/" data-sname="千寻" data-user="wudongdefeng" class="post_link report" href="javascript:;">举报</a>-->
-                                <!--<a title="将删除整个对话, 是否确定?" class="post_link" href="https://www.douban.com/doumail/?mc_delete=删除豆邮&amp;mc_46056530=46056530&amp;type=submit">删除</a>-->
-                            <!--</div>-->
-
-                        <!--</li>-->
 
 
 
@@ -145,6 +83,8 @@
 
 <script>
     import ManHeader from './ManHeader';
+    import Alert from './Alert';
+
     export default {
         name: "Message",
         components: {
@@ -159,11 +99,17 @@
             this.$axios.post(this.$API_CONFIG.API_GET_USER_MESSAGE,{}).then(data=>{
                 if(data.data.code==200) {
                     this.user_packages = data.data.data;
-                    console.log(this.user_packages)
                 }else {
-                    alert(data.data.msg)
+                    Alert.methods.warning('warning' ,data.data.msg)
                 }
             })
+        },
+        methods:{
+            spliceContent:function (data) {
+                var ret = data.replace(/<[^>]+>/g,"");
+                return ret.slice(0 ,100);
+            }
+
         }
     }
 </script>
